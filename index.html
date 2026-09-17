@@ -330,8 +330,8 @@ h1 {
 }
 
 .progress-fill {
-    height: 100%;
-    width: 2%;
+    min-height: 100svh;
+    width: 100%;
     background: linear-gradient(90deg,#7657ff,#4ecbff);
     border-radius: 20px;
     transition: width .3s;
@@ -466,13 +466,15 @@ h1 {
     position: relative;
     z-index: 1;
     height: 420vh;                 /* scroll distance that drives the 10s clip */
+    position: relative;
+    background: #050518;
 }
 
-.scroll-hero__stage {
+.scroll-hero__wrap {
     position: sticky;
     top: 0;
-    height: 100vh;
-    height: 100svh;                /* avoids mobile URL-bar jitter */
+    width: 100%;
+    height: 100svh;
     overflow: hidden;
     background: #050518;
 }
@@ -482,7 +484,7 @@ h1 {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    min-height: 100svh;
     background: #050518;
 }
 
@@ -642,7 +644,7 @@ h1 {
 .no-scrollvideo .scroll-hero { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
-    .scroll-hero { height: 100vh; }
+    .scroll-hero { height: 100svh; }
     .scroll-hero__mouse::after { animation: none; }
 }
 </style>
@@ -663,7 +665,7 @@ h1 {
 
 <!-- ===== SCROLL-SCRUB VIDEO HERO ===== -->
 <section class="scroll-hero" id="scrollHero">
-    <div class="scroll-hero__stage">
+    <div class="scroll-hero__wrap">
         <video class="scroll-hero__video" id="scrollVideo"
                src="cosmic-scroll-optimized.mp4"
                muted playsinline preload="auto"
@@ -813,11 +815,9 @@ h1 {
 </div>
 </div>
 
-<script src="/socket.io/socket.io.js"></script>
 <script src="questions.js"></script>
 
 <script>
-    const socket = io();
 </script>
 
 <script>
@@ -998,22 +998,20 @@ async function finishGame() {
 
     const participantId = "CT-" + Math.floor(Math.random() * 9000 + 1000);
 
-    socket.emit('submit_answers', {
-        originalName: originalName,
-        nickname: nickname,
-        answers: answers,
-        participantId: participantId
-    }, (response) => {
+    fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            originalName: originalName,
+            nickname: nickname,
+            answers: answers,
+            clientId: participantId
+        })
+    })
+    .then(res => res.json())
+    .then(response => {
         if (!response.success) {
-            console.error("Backend error:", response.error);
-            alert(
-                "Something went wrong while submitting your answers.\n\n" +
-                "Please check your internet connection and try again."
-            );
-
-            document.getElementById("nextButton").disabled = false;
-            document.getElementById("nextButton").textContent = "SUBMIT 🚀";
-            return;
+            throw new Error(response.error);
         }
 
         localStorage.setItem("answers", JSON.stringify(answers));
@@ -1024,6 +1022,16 @@ async function finishGame() {
         document.getElementById("finishScreen").classList.remove("hidden");
 
         console.log("Participant successfully submitted.");
+    })
+    .catch(error => {
+        console.error("Backend error:", error);
+        alert(
+            "Something went wrong while submitting your answers.\n\n" +
+            "Please check your internet connection and try again."
+        );
+
+        document.getElementById("nextButton").disabled = false;
+        document.getElementById("nextButton").textContent = "SUBMIT 🚀";
     });
 }
 

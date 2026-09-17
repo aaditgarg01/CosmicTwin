@@ -8,9 +8,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Cosmic Twin — Organizer</title>
-
-<script src="/socket.io/socket.io.js"></script>
+<title>Cosmic Twin — Organizer</title><!-- Socket replaced with fetch polling -->
 
 <style>
 
@@ -855,15 +853,14 @@ td {
 
 
 /* ==========================================
-   SOCKET.IO
+   POLLING (VERCEL SERVERLESS)
 ========================================== */
 
-const socket = io();
-
-// Listen for live updates
-socket.on('participant_update', () => {
-    loadParticipants();
-});
+setInterval(() => {
+    if (!document.getElementById("dashboard").classList.contains("hidden")) {
+        loadParticipants();
+    }
+}, 2000);
 
 
 /* ==========================================
@@ -1001,14 +998,10 @@ async function loadParticipants() {
         "🔭 Loading participants...";
 
 
-    socket.emit('get_participants', (response) => {
-        if (!response.success) {
-            console.error(response.error);
-            status.textContent = "❌ Could not load participants.";
-            return;
-        }
-        
-        participants = response.participants || [];
+    fetch('/api/participants')
+    .then(res => res.json())
+    .then(data => {
+        participants = Object.values(data) || [];
 
 
     document
@@ -1030,7 +1023,12 @@ async function loadParticipants() {
     displayParticipants();
 
 
-        status.textContent = `✅ ${participants.length} participants loaded.`;
+        status.textContent = "✅ Database synced";
+
+    })
+    .catch(error => {
+        console.error(error);
+        status.textContent = "❌ Could not load participants.";
     });
 }
 
