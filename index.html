@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Cosmic Twin</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+/* ===== TOP LOGOS ===== */
+.logo-header {
+    position: absolute;
+    top: 24px;
+    left: 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 100;
+}
+
+.logo-header img {
+    object-fit: contain;
+    display: block;
+}
+
+/* VIT */
+.logo-vit {
+    width: 125px;
+    height: 55px;
+}
+
+/* VIT-Stellar */
+.logo-stellar {
+    width: 70px;
+    height: 70px;
+}
+
+/* SBI */
+.logo-sbi {
+    width: 105px;
+    height: 55px;
+}
+
+/* Gravitas */
+.logo-gravitas {
+    width: 115px;
+    height: 55px;
+}
+
+/* Separators */
+.logo-divider {
+    width: 1px;
+    height: 48px;
+    background: rgba(255,255,255,0.35);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .logo-header {
+        top: 14px;
+        left: 14px;
+        gap: 8px;
+    }
+
+    .logo-vit {
+        width: 75px;
+        height: 38px;
+    }
+
+    .logo-stellar {
+        width: 42px;
+        height: 42px;
+    }
+
+    .logo-sbi {
+        width: 65px;
+        height: 38px;
+    }
+
+    .logo-gravitas {
+        width: 70px;
+        height: 38px;
+    }
+
+    .logo-divider {
+        height: 30px;
+    }
+}
+
+/* ===== GLOBAL STYLES & TYPOGRAPHY ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #050518;
+    color: white;
+    overflow-x: hidden;
+    /* `clip` clips without making <body> a scroll container, which would
+       otherwise break position:sticky for the scroll-scrub hero below */
+    overflow-x: clip;
+}
+
+h1, h2, .form-title, .finish-title, .logo {
+    font-family: 'Outfit', sans-serif;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(120,80,255,.25), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(0,180,255,.15), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(150,50,255,.15), transparent 30%);
+    pointer-events: none;
+}
+
+.stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px);
+    background-size: 90px 90px, 140px 140px;
+    background-position: 10px 20px, 40px 70px;
+    opacity: .35;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    padding-top: 100px;
+    position: relative;
+    z-index: 1;
+}
+
+.card {
+    width: 100%;
+    max-width: 650px;
+    padding: 40px 35px;
+    background: rgba(15,15,45,.9);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    font-size: 55px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg,#fff,#a98cff,#6edcff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #b9b9d6;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.info-box {
+    padding: 9px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.07);
+    color: #d9d9f5;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.start-btn {
+    width: 100%;
+    padding: 17px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg,#7657ff,#4ecbff);
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(100,120,255,.35);
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #777797;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* NAME SCREEN */
+.form-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: #aaaac8;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ddddef;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.07);
+    color: white;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #8b7aff;
+    box-shadow: 0 0 15px rgba(120,100,255,.2);
+}
+
+.input-group input::placeholder {
+    color: #777794;
+}
+
+.privacy {
+    text-align: center;
+    font-size: 12px;
+    color: #777797;
+    margin: 18px 0 25px;
+    line-height: 1.5;
+}
+
+.back-btn {
+    display: block;
+    margin: 15px auto 0;
+    background: transparent;
+    border: none;
+    color: #aaaac8;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* QUESTION SCREEN */
+.question-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.question-number {
+    color: #aaaac8;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.progress-percent {
+    color: #7ddcff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 7px;
+    background: rgba(255,255,255,.1);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 35px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 2%;
+    background: linear-gradient(90deg,#7657ff,#4ecbff);
+    border-radius: 20px;
+    transition: width .3s;
+}
+
+.question-category {
+    color: #8f82ff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.question-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 25px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option {
+    width: 100%;
+    padding: 16px;
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.055);
+    color: #eeeef8;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+    text-align: left;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.option:hover {
+    background: rgba(130,110,255,.15);
+    border-color: rgba(140,120,255,.5);
+    transform: translateX(3px);
+}
+
+.option.selected {
+    background: linear-gradient(90deg, rgba(118,87,255,.35), rgba(78,203,255,.2));
+    border-color: #8d7cff;
+    box-shadow: 0 0 15px rgba(120,100,255,.15);
+}
+
+.navigation {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.nav-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.previous-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.15);
+    color: #aaaac8;
+}
+
+.next-btn {
+    border: none;
+    background: linear-gradient(90deg,#7657ff,#4ecbff);
+    color: white;
+}
+
+/* FINISH SCREEN */
+.finish-icon {
+    text-align: center;
+    font-size: 65px;
+    margin-bottom: 15px;
+}
+
+.finish-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.finish-text {
+    text-align: center;
+    color: #b9b9d6;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.participant-id {
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.06);
+    color: #8fddff;
+    font-weight: 600;
+}
+
+@media(max-width:600px) {
+    .card {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .question-text {
+        font-size: 21px;
+    }
+}
+
+/* ===== SCROLL-SCRUB VIDEO HERO ===== */
+.scroll-hero {
+    position: relative;
+    z-index: 1;
+    height: 420vh;                 /* scroll distance that drives the 10s clip */
+}
+
+.scroll-hero__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;                /* avoids mobile URL-bar jitter */
+    overflow: hidden;
+    background: #050518;
+}
+
+.scroll-hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #050518;
+}
+
+/* vignette + fades so the clip melts into the page background */
+.scroll-hero__veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 50% 42%, transparent 30%, rgba(5,5,24,.55) 100%),
+        linear-gradient(to bottom,
+            rgba(5,5,24,.70) 0%,
+            rgba(5,5,24,.05) 24%,
+            rgba(5,5,24,.05) 58%,
+            #050518 100%);
+}
+
+.scroll-hero__copy {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    pointer-events: none;
+}
+
+.scroll-hero__caption {
+    position: absolute;
+    max-width: 780px;
+    text-align: center;
+    opacity: 0;
+    will-change: opacity, transform;
+}
+
+.scroll-hero__kicker {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #9f9fd0;
+    margin-bottom: 14px;
+}
+
+.scroll-hero__line {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(34px, 6.4vw, 76px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    background: linear-gradient(90deg,#fff,#a98cff,#6edcff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 40px rgba(0,0,0,.45);
+}
+
+.scroll-hero__sub {
+    margin-top: 16px;
+    font-size: clamp(15px, 2vw, 19px);
+    color: #cfcfe8;
+    line-height: 1.6;
+    text-shadow: 0 2px 18px rgba(0,0,0,.6);
+}
+
+/* scroll cue */
+.scroll-hero__cue {
+    position: absolute;
+    left: 50%;
+    bottom: 38px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #b9b9d6;
+    cursor: pointer;
+    pointer-events: auto;
+    background: none;
+    border: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.scroll-hero__mouse {
+    width: 26px;
+    height: 42px;
+    border: 2px solid rgba(255,255,255,.55);
+    border-radius: 14px;
+    position: relative;
+}
+
+.scroll-hero__mouse::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    width: 3px;
+    height: 7px;
+    margin-left: -1.5px;
+    border-radius: 2px;
+    background: #fff;
+    animation: heroWheel 1.8s ease-in-out infinite;
+}
+
+@keyframes heroWheel {
+    0%   { transform: translateY(0);    opacity: 1; }
+    70%  { transform: translateY(14px); opacity: 0; }
+    100% { transform: translateY(0);    opacity: 0; }
+}
+
+/* scrub progress rail */
+.scroll-hero__rail {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,#a98cff,#6edcff);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    opacity: .8;
+}
+
+@media (max-width: 700px) {
+    .scroll-hero { height: 280vh; }
+
+    .scroll-hero__copy { padding: 0 20px; }
+
+    .scroll-hero__line {
+        letter-spacing: -0.5px;
+        line-height: 1.15;
+    }
+
+    .scroll-hero__kicker {
+        font-size: 10px;
+        letter-spacing: 2.5px;
+        margin-bottom: 10px;
+    }
+
+    .scroll-hero__sub { margin-top: 12px; }
+
+    .scroll-hero__cue {
+        bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    .scroll-hero__mouse { width: 22px; height: 34px; }
+    .scroll-hero__mouse::after { top: 6px; height: 6px; }
+}
+
+/* graceful degradation: no video support / load failure */
+.no-scrollvideo .scroll-hero { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-hero { height: 100vh; }
+    .scroll-hero__mouse::after { animation: none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo-header">
+    <img src="stellar.jpeg" class="logo-stellar" alt="VIT-Stellar">
+    <div class="logo-divider"></div>
+    <img src="sbi.png.jpeg" class="logo-sbi" alt="SBI">
+    <div class="logo-divider"></div>
+    <img src="gravitas.jpeg" class="logo-gravitas" alt="Gravitas">
+</div>
+
+<div class="stars"></div>
+
+
+<!-- ===== SCROLL-SCRUB VIDEO HERO ===== -->
+<section class="scroll-hero" id="scrollHero">
+    <div class="scroll-hero__stage">
+        <video class="scroll-hero__video" id="scrollVideo"
+               src="cosmic-scroll-optimized.mp4"
+               muted playsinline preload="auto"
+               disablepictureinpicture
+               aria-hidden="true"></video>
+
+        <div class="scroll-hero__veil"></div>
+
+        <div class="scroll-hero__copy">
+            <div class="scroll-hero__caption" data-from="0.00" data-to="0.26">
+                <div class="scroll-hero__kicker">VIT Stellar &bull; Full Night Gazing</div>
+                <div class="scroll-hero__line">Find Your Cosmic Twin</div>
+            </div>
+
+            <div class="scroll-hero__caption" data-from="0.36" data-to="0.62">
+                <div class="scroll-hero__line">350 minds.<br>50 questions.</div>
+                <div class="scroll-hero__sub">Every answer moves you across the map of how people think.</div>
+            </div>
+
+            <div class="scroll-hero__caption" data-from="0.72" data-to="1.00">
+                <div class="scroll-hero__line">One of them<br>thinks like you.</div>
+                <div class="scroll-hero__sub">Keep scrolling to begin the experiment.</div>
+            </div>
+        </div>
+
+        <button class="scroll-hero__cue" id="scrollHeroCue" type="button" aria-label="Skip to the experiment">
+            <span>Scroll</span>
+            <span class="scroll-hero__mouse" aria-hidden="true"></span>
+        </button>
+
+        <div class="scroll-hero__rail" id="scrollHeroRail"></div>
+    </div>
+</section>
+
+<div class="container">
+<div class="card">
+
+<!-- HOME -->
+<div id="homeScreen">
+    <div class="logo">🌌</div>
+    <h1>Find Your Cosmic Twin</h1>
+    <p class="subtitle">
+        50 thought-provoking questions.<br>
+        350 participants.<br>
+        <strong>One person whose mind operates just like yours.</strong>
+    </p>
+
+    <div class="info">
+        <div class="info-box">🧠 Psychology</div>
+        <div class="info-box">⚡ Dilemmas</div>
+        <div class="info-box">🌌 Philosophy</div>
+        <div class="info-box">🚀 Cosmos</div>
+    </div>
+
+    <button class="start-btn" onclick="showNameScreen()">
+        🚀 START THE EXPERIMENT
+    </button>
+
+    <div class="footer">
+        VIT STELLAR • Full Night Gazing
+    </div>
+</div>
+
+<!-- NAME SCREEN -->
+<div id="nameScreen" class="hidden">
+    <div class="logo">👯</div>
+    <h2 class="form-title">Before We Begin...</h2>
+    <p class="form-subtitle">
+        Tell us who you are before we compute your cosmic alignment.
+    </p>
+
+    <div class="input-group">
+        <label>👤 Full Name</label>
+        <input type="text" id="originalName" placeholder="Enter your full name">
+    </div>
+
+    <div class="input-group">
+        <label>✨ Nickname / Display Name</label>
+        <input type="text" id="nickname" placeholder="What should we call you on stage?">
+    </div>
+
+    <div class="privacy">
+        🔒 Your information is confidential and will only be used for match computation.
+    </div>
+
+    <button class="start-btn" onclick="startQuestions()">
+        LET'S FIND MY TWIN 🚀
+    </button>
+
+    <button class="back-btn" onclick="goBack()">
+        ← Go Back
+    </button>
+</div>
+
+<!-- QUESTION SCREEN -->
+<div id="questionScreen" class="hidden">
+    <div class="question-top">
+        <div class="question-number" id="questionNumber">
+            QUESTION 1 / 50
+        </div>
+        <div class="progress-percent" id="progressPercent">
+            2%
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="question-category" id="questionCategory">
+        PSYCHOLOGY
+    </div>
+
+    <div class="question-text" id="questionText"></div>
+
+    <div class="options" id="optionsContainer"></div>
+
+    <div class="navigation">
+        <button class="nav-btn previous-btn" id="previousButton" onclick="previousQuestion()">
+            ← BACK
+        </button>
+
+        <button class="nav-btn next-btn" id="nextButton" onclick="nextQuestion()">
+            NEXT →
+        </button>
+    </div>
+</div>
+
+<!-- FINISH SCREEN -->
+<div id="finishScreen" class="hidden">
+    <div class="finish-icon">🌌</div>
+    <h2 class="finish-title">MISSION COMPLETE!</h2>
+
+    <p class="finish-text">
+        Your 50 answers have been securely synced to the database.<br><br>
+        Algorithms are now comparing your psychological profile across all 350 participants.
+        <br><br>
+        <strong>Your Cosmic Twin will be revealed live on stage. 👀</strong>
+    </p>
+
+    <div class="participant-id">
+        YOUR PARTICIPANT ID<br>
+        <strong id="participantId">CT-001</strong>
+    </div>
+</div>
+
+</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="questions.js"></script>
+
+<script>
+    const socket = io();
+</script>
+
+<script>
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+let currentQuestion = 0;
+let answers = {};
+let selectedQuestions = [];
+let originalName = "";
+let nickname = "";
+
+// Helper to shuffle array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+/* =====================================================
+   SCREEN FUNCTIONS
+===================================================== */
+
+function showNameScreen() {
+    document.getElementById("homeScreen").classList.add("hidden");
+    document.getElementById("nameScreen").classList.remove("hidden");
+}
+
+function goBack() {
+    document.getElementById("nameScreen").classList.add("hidden");
+    document.getElementById("homeScreen").classList.remove("hidden");
+}
+
+/* =====================================================
+   START QUESTIONS
+===================================================== */
+
+function startQuestions() {
+    originalName = document.getElementById("originalName").value.trim();
+    nickname = document.getElementById("nickname").value.trim();
+
+    if (originalName === "") {
+        alert("Please enter your full name.");
+        return;
+    }
+
+    if (nickname === "") {
+        alert("Please enter a nickname.");
+        return;
+    }
+
+    localStorage.setItem("originalName", originalName);
+    localStorage.setItem("nickname", nickname);
+
+    // Randomize 20 questions from the bank
+    selectedQuestions = shuffleArray([...questionBank]).slice(0, 20);
+    answers = {}; // Reset answers
+    currentQuestion = 0;
+
+    document.getElementById("nameScreen").classList.add("hidden");
+    document.getElementById("questionScreen").classList.remove("hidden");
+
+    showQuestion();
+}
+
+/* =====================================================
+   SHOW QUESTION
+===================================================== */
+
+function showQuestion() {
+    const question = selectedQuestions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        `QUESTION ${currentQuestion + 1} / ${selectedQuestions.length}`;
+
+    const percentage = Math.round(((currentQuestion + 1) / selectedQuestions.length) * 100);
+
+    document.getElementById("progressPercent").textContent = `${percentage}%`;
+    document.getElementById("progressFill").style.width = `${percentage}%`;
+    document.getElementById("questionCategory").textContent = question.category;
+    document.getElementById("questionText").textContent = question.text;
+
+    const optionsContainer = document.getElementById("optionsContainer");
+    optionsContainer.innerHTML = "";
+
+    question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "option";
+        button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+
+        if (answers[question.id] === index) {
+            button.classList.add("selected");
+        }
+
+        button.onclick = function() {
+            selectAnswer(question.id, index);
+        };
+
+        optionsContainer.appendChild(button);
+    });
+
+    document.getElementById("previousButton").style.visibility =
+        currentQuestion === 0 ? "hidden" : "visible";
+
+    document.getElementById("nextButton").textContent =
+        currentQuestion === selectedQuestions.length - 1 ? "SUBMIT 🚀" : "NEXT →";
+}
+
+/* =====================================================
+   SELECT ANSWER
+===================================================== */
+
+function selectAnswer(questionId, index) {
+    answers[questionId] = index;
+
+    const buttons = document.querySelectorAll(".option");
+    buttons.forEach(button => button.classList.remove("selected"));
+    buttons[index].classList.add("selected");
+}
+
+/* =====================================================
+   NEXT QUESTION
+===================================================== */
+
+function nextQuestion() {
+    const currentQId = selectedQuestions[currentQuestion].id;
+    if (answers[currentQId] === undefined) {
+        alert("Please select an answer first.");
+        return;
+    }
+
+    if (currentQuestion === selectedQuestions.length - 1) {
+        finishGame();
+        return;
+    }
+
+    currentQuestion++;
+    showQuestion();
+}
+
+/* =====================================================
+   PREVIOUS QUESTION
+===================================================== */
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+    }
+}
+
+/* =====================================================
+   FINISH GAME
+===================================================== */
+
+async function finishGame() {
+    let unansweredIndex = -1;
+    for (let i = 0; i < selectedQuestions.length; i++) {
+        if (answers[selectedQuestions[i].id] === undefined) {
+            unansweredIndex = i;
+            break;
+        }
+    }
+
+    if (unansweredIndex !== -1) {
+        alert(`Please answer Question ${unansweredIndex + 1} before submitting.`);
+        currentQuestion = unansweredIndex;
+        showQuestion();
+        return;
+    }
+
+    document.getElementById("nextButton").disabled = true;
+    document.getElementById("nextButton").textContent = "SUBMITTING...";
+
+    const participantId = "CT-" + Math.floor(Math.random() * 9000 + 1000);
+
+    socket.emit('submit_answers', {
+        originalName: originalName,
+        nickname: nickname,
+        answers: answers,
+        participantId: participantId
+    }, (response) => {
+        if (!response.success) {
+            console.error("Backend error:", response.error);
+            alert(
+                "Something went wrong while submitting your answers.\n\n" +
+                "Please check your internet connection and try again."
+            );
+
+            document.getElementById("nextButton").disabled = false;
+            document.getElementById("nextButton").textContent = "SUBMIT 🚀";
+            return;
+        }
+
+        localStorage.setItem("answers", JSON.stringify(answers));
+        localStorage.setItem("participantId", participantId);
+
+        document.getElementById("participantId").textContent = participantId;
+        document.getElementById("questionScreen").classList.add("hidden");
+        document.getElementById("finishScreen").classList.remove("hidden");
+
+        console.log("Participant successfully submitted.");
+    });
+}
+
+</script>
+
+
+<script>
+/* ===== SCROLL-DRIVEN VIDEO SCRUBBING ===== */
+(function () {
+    var hero  = document.getElementById('scrollHero');
+    var video = document.getElementById('scrollVideo');
+    if (!hero || !video || !video.canPlayType || !video.canPlayType('video/mp4')) {
+        document.documentElement.classList.add('no-scrollvideo');
+        return;
+    }
+
+    var captions = Array.prototype.slice.call(hero.querySelectorAll('[data-from]'));
+    var rail     = document.getElementById('scrollHeroRail');
+    var cue      = document.getElementById('scrollHeroCue');
+    var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // phones/tablets decode seeks far more slowly, so chase the target harder
+    // and use a wider deadband: fewer, bigger seeks instead of many tiny ones
+    var coarse   = window.matchMedia('(pointer: coarse)').matches;
+    var ease     = coarse ? 0.35 : 0.16; // Increased ease for coarse pointers for snappier mobile response
+    var deadband = coarse ? 0.05 : 0.016;
+
+    var duration = 0;
+    var smoothed = 0;
+    var ticking  = false;
+    var inView   = true;
+    var runId    = 0;          // guards against two rAF loops running at once
+
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+    video.addEventListener('error', function () {
+        document.documentElement.classList.add('no-scrollvideo');
+        ticking = false;
+    });
+
+    function onMeta() {
+        if (duration) return;                       // already initialised
+        duration = video.duration || 0;
+        if (!duration || !isFinite(duration)) {
+            document.documentElement.classList.add('no-scrollvideo');
+            return;
+        }
+        // force a decoded first frame (iOS shows black until the clip has played)
+        var p = video.play();
+        if (p && p.then) p.then(function () { video.pause(); }).catch(function () {});
+        else video.pause();
+
+        if (reduced) {           // no scrubbing: hold one representative frame
+            video.currentTime = duration * 0.45;
+            paint(0.5);
+            return;
+        }
+        start();
+    }
+
+    // metadata can already be in by the time this script runs (cached / fast server)
+    if (video.readyState >= 1) onMeta();
+    else video.addEventListener('loadedmetadata', onMeta);
+
+    function progress() {
+        var span = hero.offsetHeight - window.innerHeight;
+        if (span <= 0) return 0;
+        var p = -hero.getBoundingClientRect().top / span;
+        return p < 0 ? 0 : (p > 1 ? 1 : p);
+    }
+
+    function paint(p) {
+        for (var i = 0; i < captions.length; i++) {
+            var el = captions[i];
+            var from = parseFloat(el.dataset.from);
+            var to   = parseFloat(el.dataset.to);
+            var fade = 0.07;
+            var o = Math.min((p - from + fade) / fade, (to + fade - p) / fade, 1);
+            o = o < 0 ? 0 : (o > 1 ? 1 : o);
+            el.style.opacity = o;
+            el.style.transform = 'translateY(' + ((1 - o) * 22).toFixed(2) + 'px)';
+        }
+        if (rail) rail.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+        if (cue)  cue.style.opacity = Math.max(0, 1 - p * 7);
+    }
+
+    function frame(id) {
+        if (!ticking || id !== runId) return;
+        var p    = progress();
+        var want = p * duration;
+
+        smoothed += (want - smoothed) * ease;
+        if (Math.abs(want - smoothed) < 0.004) smoothed = want;
+
+        // skip while a seek is still resolving, otherwise seeks queue up and stutter
+        if (!video.seeking && Math.abs(video.currentTime - smoothed) > deadband) {
+            try {
+                video.currentTime = Math.max(0, Math.min(duration - 0.05, smoothed));
+            } catch (e) {}
+        }
+
+        paint(p);
+        requestAnimationFrame(function () { frame(id); });
+    }
+
+    function start() {
+        if (ticking || !inView || !duration || reduced) return;
+        ticking = true;
+        var id = ++runId;
+        requestAnimationFrame(function () { frame(id); });
+    }
+
+    // only burn frames while the hero is actually on screen
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+            inView = entries[0].isIntersecting;
+            if (inView) start();
+            else { ticking = false; runId++; }
+        }, { rootMargin: '10% 0px' }).observe(hero);
+    }
+
+    function refresh() { if (duration) paint(progress()); }
+    window.addEventListener('resize', refresh);
+    window.addEventListener('orientationchange', function () { setTimeout(refresh, 250); });
+
+    /* ---- hand off from the hero to the quiz card ---- */
+    var container = document.querySelector('.container');
+
+    function revealCard() {
+        if (!container) return;
+        container.scrollIntoView({
+            behavior: reduced ? 'auto' : 'smooth',
+            block: 'start'
+        });
+    }
+
+    if (cue) cue.addEventListener('click', revealCard);
+
+    ['showNameScreen', 'startQuestions', 'finishGame'].forEach(function (name) {
+        var original = window[name];
+        if (typeof original !== 'function') return;
+        window[name] = function () {
+            var result = original.apply(this, arguments);
+            revealCard();
+            return result;
+        };
+    });
+})();
+</script>
+
+</body>
+</html>

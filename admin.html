@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Cosmic Twin — Organizer</title>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #050518;
+    color: white;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(118,87,255,.20),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 85% 70%,
+            rgba(78,203,255,.15),
+            transparent 25%
+        );
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* LOGIN */
+
+.login-container {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 25px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background: rgba(15,15,45,.92);
+
+    border:
+        1px solid rgba(255,255,255,.14);
+
+    border-radius: 22px;
+}
+
+.logo {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.login-card h1 {
+    font-size: 32px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #a98cff,
+            #6edcff
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-subtitle {
+    color: #9999bb;
+    margin: 10px 0 30px;
+}
+
+input {
+    width: 100%;
+
+    padding: 15px;
+
+    margin-bottom: 15px;
+
+    border-radius: 11px;
+
+    border:
+        1px solid rgba(255,255,255,.14);
+
+    background:
+        rgba(255,255,255,.06);
+
+    color: white;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #8d7cff;
+}
+
+.main-button {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7657ff,
+            #4ecbff
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.error {
+    color: #ff8585;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 36px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #a98cff,
+            #6edcff
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    color: #9999bb;
+    margin-top: 7px;
+}
+
+.logout {
+    padding: 11px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* STATS */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.stat {
+    padding: 22px;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+}
+
+.stat-number {
+    font-size: 34px;
+
+    font-weight: bold;
+
+    color: #7ddcff;
+}
+
+.stat-label {
+    margin-top: 6px;
+
+    color: #9999bb;
+}
+
+
+/* CONTROL CARD */
+
+.card {
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(15,15,45,.88);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+}
+
+.controls {
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.control-button {
+    padding: 13px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7657ff,
+            #4ecbff
+        );
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.secondary-button {
+    background:
+        rgba(255,255,255,.08);
+}
+
+
+/* STATUS */
+
+.status {
+    margin-top: 15px;
+
+    color: #aaaac8;
+
+    line-height: 1.5;
+}
+
+
+/* CURRENT PAIR */
+
+.pair-card {
+    text-align: center;
+
+    padding: 35px 25px;
+}
+
+.pair-number {
+    color: #8d82ff;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 25px;
+}
+
+.pair-names {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 30px;
+
+    flex-wrap: wrap;
+}
+
+.person {
+    min-width: 280px;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+}
+
+.person-label {
+    color: #8888aa;
+
+    font-size: 12px;
+
+    margin-bottom: 10px;
+}
+
+.nickname {
+    font-size: 28px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+.original-name {
+    color: #aaaac8;
+
+    font-size: 15px;
+}
+
+.twin-symbol {
+    font-size: 35px;
+}
+
+.match-score {
+    margin-top: 25px;
+
+    font-size: 40px;
+
+    font-weight: bold;
+
+    color: #7ddcff;
+}
+
+.match-label {
+    color: #8888aa;
+    font-size: 13px;
+}
+
+.revealed {
+    display: inline-block;
+
+    margin-top: 18px;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(80,220,150,.12);
+
+    color: #78e5ac;
+
+    font-size: 13px;
+}
+
+.pair-controls {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-top: 30px;
+}
+
+.pair-button {
+    padding: 13px 20px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background:
+        rgba(255,255,255,.08);
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.reveal-button {
+    background:
+        linear-gradient(
+            90deg,
+            #7657ff,
+            #4ecbff
+        );
+}
+
+
+/* TABLE */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: left;
+
+    padding: 13px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+}
+
+th {
+    color: #9c8dff;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+}
+
+td {
+    color: #ddddee;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:700px) {
+
+    .container {
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        align-items: flex-start;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .person {
+        min-width: 100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div id="loginScreen">
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="logo">
+                🌌
+            </div>
+
+            <h1>
+                Cosmic Twin
+            </h1>
+
+            <p class="login-subtitle">
+                Organizer Control Room
+            </p>
+
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Organizer email"
+            >
+
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+            >
+
+
+            <button
+                class="main-button"
+                onclick="login()">
+
+                🔐 LOGIN
+
+            </button>
+
+
+            <div
+                id="loginError"
+                class="error">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div
+    id="dashboard"
+    class="hidden">
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h1>
+                    🌌 Cosmic Twin
+                </h1>
+
+                <p>
+                    Organizer Control Room
+                </p>
+
+            </div>
+
+
+            <button
+                class="logout"
+                onclick="logout()">
+
+                LOGOUT
+
+            </button>
+
+        </div>
+
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="participantCount">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Participants
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="completedCount">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Completed
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="pairCount">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Twin Pairs
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- CONTROLS -->
+
+        <div class="card">
+
+            <h2>
+                🎛️ Controls
+            </h2>
+
+            <p
+                class="status"
+                id="status">
+
+                Waiting for participants...
+
+            </p>
+
+
+            <div
+                class="controls"
+                style="margin-top:20px;">
+
+                <button
+                    class="control-button"
+                    onclick="loadParticipants()">
+
+                    🔄 REFRESH PARTICIPANTS
+
+                </button>
+
+
+                <button
+                    class="control-button"
+                    onclick="generateAndLockMatches()">
+
+                    🌌 GENERATE & LOCK TWINS
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CURRENT PAIR -->
+
+        <div
+            class="card pair-card"
+            id="pairCard">
+
+            <div class="pair-number">
+
+                NO MATCHING GENERATED YET
+
+            </div>
+
+
+            <div class="pair-names">
+
+                <div class="person">
+
+                    <div class="person-label">
+                        COSMIC TWIN #1
+                    </div>
+
+                    <div class="nickname">
+                        —
+                    </div>
+
+                    <div class="original-name">
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="twin-symbol">
+                    ✨
+                </div>
+
+
+                <div class="person">
+
+                    <div class="person-label">
+                        COSMIC TWIN #2
+                    </div>
+
+                    <div class="nickname">
+                        —
+                    </div>
+
+                    <div class="original-name">
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="match-score">
+                —%
+            </div>
+
+            <div class="match-label">
+                MATCH
+            </div>
+
+        </div>
+
+
+
+        <!-- PARTICIPANT TABLE -->
+
+        <div class="card">
+
+            <h2 style="margin-bottom:20px;">
+                👥 Participants
+            </h2>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Original Name</th>
+
+                            <th>Nickname</th>
+
+                            <th>Submitted</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="participantTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* ==========================================
+   SOCKET.IO
+========================================== */
+
+const socket = io();
+
+// Listen for live updates
+socket.on('participant_update', () => {
+    loadParticipants();
+});
+
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let participants = [];
+
+let matches = [];
+
+let currentPair = 0;
+
+let revealedPairs = new Set();
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+async function login() {
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+    const errorBox =
+        document
+        .getElementById("loginError");
+
+
+    errorBox.textContent = "";
+
+
+    if (!email || !password) {
+
+        errorBox.textContent =
+            "Enter your email and password.";
+
+        return;
+    }
+
+
+    if (password !== "admin") {
+        errorBox.textContent = "Login failed. Invalid password.";
+        return;
+    }
+
+
+    showDashboard();
+
+}
+
+
+/* ==========================================
+   SHOW DASHBOARD
+========================================== */
+
+async function showDashboard() {
+
+    document
+        .getElementById("loginScreen")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("dashboard")
+        .classList.remove("hidden");
+
+
+    const savedMatches =
+        localStorage.getItem(
+            "cosmicTwinMatches"
+        );
+
+
+    if (savedMatches) {
+
+        matches =
+            JSON.parse(savedMatches);
+
+    }
+
+
+    const savedRevealed =
+        localStorage.getItem(
+            "cosmicTwinRevealed"
+        );
+
+
+    if (savedRevealed) {
+
+        revealedPairs =
+            new Set(
+                JSON.parse(savedRevealed)
+            );
+
+    }
+
+
+    await loadParticipants();
+
+
+    if (matches.length > 0) {
+
+        document
+            .getElementById("pairCount")
+            .textContent =
+            matches.length;
+
+        showCurrentPair();
+
+    }
+
+}
+
+
+/* ==========================================
+   LOAD PARTICIPANTS
+========================================== */
+
+async function loadParticipants() {
+
+    const status =
+        document.getElementById("status");
+
+
+    status.textContent =
+        "🔭 Loading participants...";
+
+
+    socket.emit('get_participants', (response) => {
+        if (!response.success) {
+            console.error(response.error);
+            status.textContent = "❌ Could not load participants.";
+            return;
+        }
+        
+        participants = response.participants || [];
+
+
+    document
+        .getElementById("participantCount")
+        .textContent =
+        participants.length;
+
+
+    document
+        .getElementById("completedCount")
+        .textContent =
+        participants.filter(
+            p =>
+            Array.isArray(p.answers) &&
+            p.answers.length >= 50
+        ).length;
+
+
+    displayParticipants();
+
+
+        status.textContent = `✅ ${participants.length} participants loaded.`;
+    });
+}
+
+
+/* ==========================================
+   DISPLAY PARTICIPANTS
+========================================== */
+
+function displayParticipants() {
+
+    const table =
+        document
+        .getElementById(
+            "participantTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    participants.forEach(
+        (participant, index) => {
+
+            const row =
+                document.createElement("tr");
+
+
+            const date =
+                new Date(
+                    participant.created_at
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        participant.original_name
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        participant.nickname
+                    )}
+                </td>
+
+                <td>
+                    ${date.toLocaleString()}
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+   GENERATE + LOCK
+========================================== */
+
+function generateAndLockMatches() {
+
+    if (
+        participants.length < 2
+    ) {
+
+        alert(
+            "You need at least 2 participants."
+        );
+
+        return;
+    }
+
+
+    const completed =
+        participants.filter(
+            p =>
+            Array.isArray(p.answers) &&
+            p.answers.length >= 50
+        );
+
+
+    if (completed.length < 2) {
+
+        alert(
+            "At least 2 completed participants are required."
+        );
+
+        return;
+    }
+
+
+    if (matches.length > 0) {
+
+        const regenerate =
+            confirm(
+                "Matches are already locked.\n\n" +
+                "Do you really want to generate a NEW matching?\n\n" +
+                "This will replace the current pairs."
+            );
+
+
+        if (!regenerate) {
+
+            return;
+
+        }
+
+    }
+
+
+    const possiblePairs = [];
+
+
+    for (
+        let i = 0;
+        i < completed.length;
+        i++
+    ) {
+
+        for (
+            let j = i + 1;
+            j < completed.length;
+            j++
+        ) {
+
+            const personA =
+                completed[i];
+
+            const personB =
+                completed[j];
+
+
+            const score =
+                calculateSimilarity(
+                    personA.answers,
+                    personB.answers
+                );
+
+
+            possiblePairs.push({
+
+                personA:
+                    personA,
+
+                personB:
+                    personB,
+
+                score:
+                    score
+
+            });
+
+        }
+
+    }
+
+
+    /*
+       Sort by highest similarity.
+
+       ID is used as a deterministic
+       tie-breaker.
+    */
+
+    possiblePairs.sort(
+        (a, b) => {
+
+            if (
+                b.score !== a.score
+            ) {
+
+                return b.score - a.score;
+
+            }
+
+
+            const idA =
+                String(a.personA.id) +
+                String(a.personB.id);
+
+            const idB =
+                String(b.personA.id) +
+                String(b.personB.id);
+
+
+            return idA.localeCompare(idB);
+
+        }
+    );
+
+
+    const used =
+        new Set();
+
+
+    matches = [];
+
+
+    for (
+        const pair of possiblePairs
+    ) {
+
+        const idA =
+            pair.personA.id;
+
+        const idB =
+            pair.personB.id;
+
+
+        if (
+            used.has(idA) ||
+            used.has(idB)
+        ) {
+
+            continue;
+
+        }
+
+
+        used.add(idA);
+
+        used.add(idB);
+
+
+        matches.push({
+
+            personA: {
+
+                id:
+                    pair.personA.id,
+
+                original_name:
+                    pair.personA.original_name,
+
+                nickname:
+                    pair.personA.nickname
+
+            },
+
+            personB: {
+
+                id:
+                    pair.personB.id,
+
+                original_name:
+                    pair.personB.original_name,
+
+                nickname:
+                    pair.personB.nickname
+
+            },
+
+            score:
+                pair.score
+
+        });
+
+
+        if (
+            matches.length >=
+            Math.floor(
+                completed.length / 2
+            )
+        ) {
+
+            break;
+
+        }
+
+    }
+
+
+    currentPair = 0;
+
+    revealedPairs =
+        new Set();
+
+
+    /*
+       LOCK locally on organizer laptop.
+    */
+
+    localStorage.setItem(
+        "cosmicTwinMatches",
+        JSON.stringify(matches)
+    );
+
+
+    localStorage.setItem(
+        "cosmicTwinRevealed",
+        JSON.stringify([])
+    );
+
+
+    document
+        .getElementById("pairCount")
+        .textContent =
+        matches.length;
+
+
+    document
+        .getElementById("status")
+        .textContent =
+        `🔒 ${matches.length} pairs generated and LOCKED.`;
+
+
+    showCurrentPair();
+
+}
+
+
+/* ==========================================
+   SIMILARITY
+========================================== */
+
+function calculateSimilarity(answersA, answersB) {
+    let sharedQuestions = 0;
+    let matchingAnswers = 0;
+
+    for (let qId in answersA) {
+        if (answersB[qId] !== undefined) {
+            sharedQuestions++;
+            if (answersA[qId] === answersB[qId]) {
+                matchingAnswers++;
+            }
+        }
+    }
+
+    if (sharedQuestions === 0) {
+        return 0;
+    }
+
+    return Math.round((matchingAnswers / sharedQuestions) * 100);
+}
+
+
+/* ==========================================
+   SHOW CURRENT PAIR
+========================================== */
+
+function showCurrentPair() {
+
+    if (
+        matches.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const match =
+        matches[currentPair];
+
+
+    const card =
+        document
+        .getElementById("pairCard");
+
+
+    const isRevealed =
+        revealedPairs.has(
+            currentPair
+        );
+
+
+    card.innerHTML = `
+
+        <div class="pair-number">
+
+            PAIR ${currentPair + 1}
+            OF ${matches.length}
+
+        </div>
+
+
+        <div class="pair-names">
+
+
+            <div class="person">
+
+                <div class="person-label">
+                    COSMIC TWIN #1
+                </div>
+
+                <div class="nickname">
+
+                    ${escapeHtml(
+                        match.personA.nickname
+                    )}
+
+                </div>
+
+                <div class="original-name">
+
+                    ${escapeHtml(
+                        match.personA.original_name
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="twin-symbol">
+                ✨
+            </div>
+
+
+            <div class="person">
+
+                <div class="person-label">
+                    COSMIC TWIN #2
+                </div>
+
+                <div class="nickname">
+
+                    ${escapeHtml(
+                        match.personB.nickname
+                    )}
+
+                </div>
+
+                <div class="original-name">
+
+                    ${escapeHtml(
+                        match.personB.original_name
+                    )}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="match-score">
+
+            ${match.score}%
+
+        </div>
+
+
+        <div class="match-label">
+            MATCH
+        </div>
+
+
+        ${
+            isRevealed
+
+            ? `
+                <div class="revealed">
+                    ✅ REVEALED
+                </div>
+            `
+
+            : ""
+        }
+
+
+        <div class="pair-controls">
+
+
+            <button
+                class="pair-button"
+                onclick="previousPair()">
+
+                ← PREVIOUS
+
+            </button>
+
+
+            <button
+                class="pair-button reveal-button"
+                onclick="markRevealed()">
+
+                ${
+                    isRevealed
+                    ? "✅ REVEALED"
+                    : "🎤 MARK AS REVEALED"
+                }
+
+            </button>
+
+
+            <button
+                class="pair-button"
+                onclick="nextPair()">
+
+                NEXT →
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================
+   NEXT
+========================================== */
+
+function nextPair() {
+
+    if (
+        currentPair <
+        matches.length - 1
+    ) {
+
+        currentPair++;
+
+        showCurrentPair();
+
+    }
+
+}
+
+
+/* ==========================================
+   PREVIOUS
+========================================== */
+
+function previousPair() {
+
+    if (
+        currentPair > 0
+    ) {
+
+        currentPair--;
+
+        showCurrentPair();
+
+    }
+
+}
+
+
+/* ==========================================
+   MARK REVEALED
+========================================== */
+
+function markRevealed() {
+
+    revealedPairs.add(
+        currentPair
+    );
+
+
+    localStorage.setItem(
+        "cosmicTwinRevealed",
+        JSON.stringify(
+            Array.from(
+                revealedPairs
+            )
+        )
+    );
+
+
+    showCurrentPair();
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+async function logout() {
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+    location.reload();
+
+}
+
+
+/* ==========================================
+   SECURITY
+========================================== */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text || "";
+
+    return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+
+</html>
