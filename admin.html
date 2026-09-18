@@ -1320,13 +1320,8 @@ function generateAndLockMatches() {
     for (
         const pair of possiblePairs
     ) {
-
-        const idA =
-            pair.personA.id;
-
-        const idB =
-            pair.personB.id;
-
+const idA = pair.personA.participant_id;
+const idB = pair.personB.participant_id;
 
         if (
             used.has(idA) ||
@@ -1347,9 +1342,7 @@ function generateAndLockMatches() {
 
             personA: {
 
-                id:
-                    pair.personA.id,
-
+             participant_id: pair.personA.participant_id,
                 original_name:
                     pair.personA.original_name,
 
@@ -1358,18 +1351,18 @@ function generateAndLockMatches() {
 
             },
 
-            personB: {
+         personB: {
 
-                id:
-                    pair.personB.id,
+    participant_id:
+        pair.personB.participant_id,
 
-                original_name:
-                    pair.personB.original_name,
+    original_name:
+        pair.personB.original_name,
 
-                nickname:
-                    pair.personB.nickname
+    nickname:
+        pair.personB.nickname
 
-            },
+},
 
             score:
                 pair.score
