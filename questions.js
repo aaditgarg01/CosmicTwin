@@ -97,6 +97,6 @@ const questionBank = [
     {
         id: "q20", category: "Cosmic Twin",
         text: "💫 What would make you think “This person is actually my Cosmic Twin”?",
-        options: ["We have the same humour", "We like the same things", "We think in surprisingly similar ways", "Our choices are weirdly identic"]
+        options: ["We have the same humour", "We like the same things", "We think in surprisingly similar ways", "Our choices are weirdly identical"]
     }
 ];
