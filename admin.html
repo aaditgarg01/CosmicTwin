@@ -1255,20 +1255,15 @@ function generateAndLockMatches() {
        tie-breaker.
     */
 
+    // Shuffle array first to randomize ties
+    for (let i = possiblePairs.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [possiblePairs[i], possiblePairs[j]] = [possiblePairs[j], possiblePairs[i]];
+    }
+
     possiblePairs.sort(
         (a, b) => {
-
-            if (
-                b.score !== a.score
-            ) {
-
-                return b.score - a.score;
-
-            }
-
-            // If scores are equal, randomize the matching
-            return Math.random() - 0.5;
-
+            return b.score - a.score;
         }
     );
 
