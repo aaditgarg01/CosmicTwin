@@ -3,10 +3,10 @@
 A real-time web application designed to find "Cosmic Twins" among hundreds of participants by comparing their answers to a set of randomized thought-provoking questions.
 
 ## Live Deployment
-🚀 **Play the live version here:** [https://cosmic-twin-kohl.vercel.app](https://cosmic-twin-kohl.vercel.app)
+🚀 **Play the live version here:** [https://cosmictwin.vercel.app](https://cosmictwin.vercel.app)
 
 ## Admin Dashboard
-The admin dashboard is available at: [https://cosmic-twin-kohl.vercel.app/admin.html](https://cosmic-twin-kohl.vercel.app/admin.html)
+The admin dashboard is available at: [https://cosmictwin.vercel.app/admin.html](https://cosmictwin.vercel.app/admin.html)
 
 ## Technology Stack
 - **Frontend:** HTML, CSS (Custom Animations, Mobile Responsive), Vanilla JS
