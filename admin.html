@@ -1015,8 +1015,8 @@ async function loadParticipants() {
         .textContent =
         participants.filter(
             p =>
-            Array.isArray(p.answers) &&
-            p.answers.length >= 50
+            p.answers && typeof p.answers === 'object' &&
+            Object.keys(p.answers).length >= 20
         ).length;
 
 
@@ -1116,8 +1116,8 @@ function generateAndLockMatches() {
     const completed =
         participants.filter(
             p =>
-            Array.isArray(p.answers) &&
-            p.answers.length >= 50
+            p.answers && typeof p.answers === 'object' &&
+            Object.keys(p.answers).length >= 20
         );
 
 
