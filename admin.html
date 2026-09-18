@@ -1429,26 +1429,50 @@ const idB = pair.personB.participant_id;
 ========================================== */
 
 function calculateSimilarity(answersA, answersB) {
-    let sharedQuestions = 0;
-    let matchingAnswers = 0;
+    const weights = {
+        q1: 1.0,
+        q2: 0.75,
+        q3: 1.5,
+        q4: 1.0,
+        q5: 0.75,
+        q6: 1.25,
+        q7: 2.0,
+        q8: 1.0,
+        q9: 0.75,
+        q10: 1.5,
+        q11: 0.75,
+        q12: 1.0,
+        q13: 1.5,
+        q14: 0.75,
+        q15: 1.0,
+        q16: 0.75,
+        q17: 1.25,
+        q18: 2.0,
+        q19: 0.75,
+        q20: 2.0
+    };
 
-    for (let qId in answersA) {
+    let totalWeight = 0;
+    let matchingWeight = 0;
+
+    for (const qId in answersA) {
         if (answersB[qId] !== undefined) {
-            sharedQuestions++;
+            const weight = weights[qId] || 1.0;
+
+            totalWeight += weight;
+
             if (answersA[qId] === answersB[qId]) {
-                matchingAnswers++;
+                matchingWeight += weight;
             }
         }
     }
 
-    if (sharedQuestions === 0) {
+    if (totalWeight === 0) {
         return 0;
     }
 
-    return Math.round((matchingAnswers / sharedQuestions) * 100);
+    return Math.round((matchingWeight / totalWeight) * 100);
 }
-
-
 /* ==========================================
    SHOW CURRENT PAIR
 ========================================== */
