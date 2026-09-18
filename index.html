@@ -818,7 +818,7 @@ h1 {
 </div>
 </div>
 
-<script src="questions.js"></script>
+<script src="questions.js?v=2"></script>
 
 <script>
 </script>
@@ -879,8 +879,8 @@ function startQuestions() {
     localStorage.setItem("originalName", originalName);
     localStorage.setItem("nickname", nickname);
 
-    // Use the 20 questions from the bank
-    selectedQuestions = [...questionBank];
+    // Randomize 20 questions from the bank
+    selectedQuestions = shuffleArray([...questionBank]);
     answers = {}; // Reset answers
     currentQuestion = 0;
 

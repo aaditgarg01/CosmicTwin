@@ -727,6 +727,15 @@ td {
 
                 </button>
 
+                <button
+                    class="control-button"
+                    onclick="resetDatabase()"
+                    style="background: rgba(255, 80, 80, 0.2); color: #ff8585; border: 1px solid #ff8585;">
+
+                    🗑️ ERASE ALL DATA
+
+                </button>
+
             </div>
 
         </div>
@@ -983,6 +992,49 @@ async function showDashboard() {
 
 }
 
+
+/* ==========================================
+   RESET DATABASE
+========================================== */
+
+async function resetDatabase() {
+    if (!confirm("⚠️ WARNING: This will permanently delete all participants and responses! Are you sure?")) {
+        return;
+    }
+
+    try {
+        document.getElementById("status").textContent = "🗑️ Erasing data...";
+        const response = await fetch('/api/reset', { method: 'POST' });
+        
+        if (response.ok) {
+            alert("Database has been reset successfully.");
+            localStorage.removeItem("cosmicTwinMatches");
+            localStorage.removeItem("cosmicTwinRevealed");
+            matches = [];
+            revealedPairs = new Set();
+            document.getElementById("pairCount").textContent = "0";
+            document.getElementById("pairCard").innerHTML = `
+                <div class="pair-number">NO MATCHING GENERATED YET</div>
+                <div class="pair-names">
+                    <div class="person"><div class="person-label">COSMIC TWIN #1</div><div class="nickname">—</div><div class="original-name">—</div></div>
+                    <div class="twin-symbol">✨</div>
+                    <div class="person"><div class="person-label">COSMIC TWIN #2</div><div class="nickname">—</div><div class="original-name">—</div></div>
+                </div>
+                <div class="match-score">—%</div>
+                <div class="match-label">MATCH</div>
+            `;
+            await loadParticipants();
+        } else {
+            const data = await response.json();
+            alert("Error resetting database: " + data.error);
+            document.getElementById("status").textContent = "❌ Failed to erase data.";
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Network error resetting database.");
+        document.getElementById("status").textContent = "❌ Failed to erase data.";
+    }
+}
 
 /* ==========================================
    LOAD PARTICIPANTS
