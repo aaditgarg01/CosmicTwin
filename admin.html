@@ -1108,10 +1108,9 @@ function displayParticipants() {
                 document.createElement("tr");
 
 
-            const date =
-                new Date(
-                    participant.created_at
-                );
+            const date = participant.created_at
+                ? new Date(participant.created_at).toLocaleString()
+                : "Unknown time";
 
 
             row.innerHTML = `
@@ -1133,7 +1132,7 @@ function displayParticipants() {
                 </td>
 
                 <td>
-                    ${date.toLocaleString()}
+                    ${date}
                 </td>
 
             `;

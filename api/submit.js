@@ -21,7 +21,8 @@ export default async function handler(req, res) {
             participant_id: clientId,
             original_name: originalName,
             nickname: nickname,
-            answers: answers
+            answers: answers,
+            created_at: new Date().toISOString()
         };
         await redis.hset("participants", { [clientId]: JSON.stringify(participantData) });
         return res.status(200).json({ success: true, clientId });
