@@ -810,6 +810,46 @@ td {
 
 
 
+        <!-- LEADERBOARD TABLE -->
+
+        <div class="card" id="leaderboardCard" style="display: none; margin-bottom: 20px;">
+
+            <h2 style="margin-bottom:20px;">
+                🏆 Twin Leaderboard
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Rank</th>
+
+                            <th>Twin #1</th>
+
+                            <th>Twin #2</th>
+
+                            <th>Match %</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody
+                        id="leaderboardTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
         <!-- PARTICIPANT TABLE -->
 
         <div class="card">
@@ -987,6 +1027,7 @@ async function showDashboard() {
             matches.length;
 
         showCurrentPair();
+        renderLeaderboard();
 
     }
 
@@ -1023,6 +1064,7 @@ async function resetDatabase() {
                 <div class="match-score">—%</div>
                 <div class="match-label">MATCH</div>
             `;
+            renderLeaderboard();
             await loadParticipants();
         } else {
             const data = await response.json();
@@ -1384,6 +1426,7 @@ function generateAndLockMatches() {
 
 
     showCurrentPair();
+    renderLeaderboard();
 
 }
 
@@ -1575,6 +1618,51 @@ function showCurrentPair() {
 
     `;
 
+}
+
+/* ==========================================
+   RENDER LEADERBOARD
+========================================== */
+
+function renderLeaderboard() {
+    const leaderboardCard = document.getElementById("leaderboardCard");
+    const leaderboardTable = document.getElementById("leaderboardTable");
+
+    if (matches.length === 0) {
+        leaderboardCard.style.display = "none";
+        return;
+    }
+
+    leaderboardCard.style.display = "block";
+    leaderboardTable.innerHTML = "";
+
+    matches.forEach((match, index) => {
+        const row = document.createElement("tr");
+
+        let rankBadge = `${index + 1}`;
+        if (index === 0) rankBadge = "🥇";
+        else if (index === 1) rankBadge = "🥈";
+        else if (index === 2) rankBadge = "🥉";
+
+        row.innerHTML = `
+            <td style="font-size: ${index < 3 ? '24px' : '16px'}; font-weight: bold; text-align: center;">
+                ${rankBadge}
+            </td>
+            <td>
+                <strong>${escapeHtml(match.personA.nickname)}</strong><br>
+                <span style="font-size: 12px; color: #8888aa;">${escapeHtml(match.personA.original_name)}</span>
+            </td>
+            <td>
+                <strong>${escapeHtml(match.personB.nickname)}</strong><br>
+                <span style="font-size: 12px; color: #8888aa;">${escapeHtml(match.personB.original_name)}</span>
+            </td>
+            <td style="color: #7ddcff; font-weight: bold;">
+                ${match.score}%
+            </td>
+        `;
+
+        leaderboardTable.appendChild(row);
+    });
 }
 
 
