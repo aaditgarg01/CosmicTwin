@@ -27,6 +27,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, clientId });
     } catch (error) {
         console.error('Redis error:', error);
-        return res.status(500).json({ error: 'Failed to save to database' });
+        return res.status(500).json({ error: 'Failed to save to database', details: error.message || String(error) });
     }
 }
