@@ -887,6 +887,10 @@ function goBack() {
 ===================================================== */
 
 function startQuestions() {
+    if (localStorage.getItem("cosmicTwinSubmitted") === "true") {
+    alert("You have already submitted your response from this device.");
+    return;
+}
     originalName = document.getElementById("originalName").value.trim();
     nickname = document.getElementById("nickname").value.trim();
 
@@ -1043,6 +1047,7 @@ async function finishGame() {
 
         localStorage.setItem("answers", JSON.stringify(answers));
         localStorage.setItem("participantId", participantId);
+        localStorage.setItem("cosmicTwinSubmitted", "true");
 
         document.getElementById("participantId").textContent = participantId;
         document.getElementById("questionScreen").classList.add("hidden");
