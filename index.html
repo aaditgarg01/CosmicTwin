@@ -821,6 +821,30 @@ h1 {
 <script src="questions.js?v=2"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch('/api/status');
+        const data = await response.json();
+        const localReset = localStorage.getItem("global_reset");
+
+        // If the server's reset timestamp is different from the local one, the admin has reset the database.
+        if (data.global_reset && data.global_reset !== localReset) {
+            localStorage.removeItem("participantId");
+            localStorage.removeItem("answers");
+            localStorage.setItem("global_reset", data.global_reset);
+        }
+    } catch (e) {
+        console.error("Could not fetch status", e);
+    }
+
+    // If the participant has already submitted, show the finish screen immediately.
+    const participantId = localStorage.getItem("participantId");
+    if (participantId) {
+        document.getElementById("participantId").textContent = participantId;
+        document.getElementById("homeScreen").classList.add("hidden");
+        document.getElementById("finishScreen").classList.remove("hidden");
+    }
+});
 </script>
 
 <script>

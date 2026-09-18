@@ -6,16 +6,15 @@ const redis = new Redis({
 })
 
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        await redis.del("participants");
-        await redis.set("global_reset", Date.now().toString());
-        return res.status(200).json({ success: true });
+        const lastReset = await redis.get("global_reset") || "0";
+        return res.status(200).json({ global_reset: lastReset });
     } catch (error) {
         console.error('Redis error:', error);
-        return res.status(500).json({ error: 'Failed to clear database', details: error.message || String(error) });
+        return res.status(500).json({ error: 'Failed to fetch status', details: error.message || String(error) });
     }
 }
