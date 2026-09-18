@@ -1215,17 +1215,8 @@ function generateAndLockMatches() {
 
             }
 
-
-            const idA =
-                String(a.personA.id) +
-                String(a.personB.id);
-
-            const idB =
-                String(b.personA.id) +
-                String(b.personB.id);
-
-
-            return idA.localeCompare(idB);
+            // If scores are equal, randomize the matching
+            return Math.random() - 0.5;
 
         }
     );
