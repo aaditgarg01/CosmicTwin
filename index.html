@@ -904,7 +904,7 @@ function startQuestions() {
     localStorage.setItem("nickname", nickname);
 
     // Randomize 20 questions from the bank
-    selectedQuestions = shuffleArray([...questionBank]);
+    selectedQuestions = ([...questionBank]);
     answers = {}; // Reset answers
     currentQuestion = 0;
 
